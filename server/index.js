@@ -6,7 +6,7 @@ import postRouter from "./routes/posts.js";
 
 const app = express();
 
-const MONGO_URL = "mongodb+srv://faiz35946:fa786678@cluster0.4fei4pn.mongodb.net/?retryWrites=true&w=majority"
+const MONGO_URL = "mongodb+srv://faiz35946:fa786678@cluster0.4fei4pn.mongodb.net/memories?retryWrites=true&w=majority"
 const PORT = 4000;
 
 mongoose
