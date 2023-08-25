@@ -10,6 +10,7 @@ export const getPosts = () => async (dispatch) => {
     console.log(error.message);
   }
 };
+
 export const createPost = (post) => async (dispatch) => {
   try {
     const { data } = await api.createPost(post);
@@ -19,6 +20,7 @@ export const createPost = (post) => async (dispatch) => {
     console.log(error.message);
   }
 };
+
 export const updatePost = (id, post) => async (dispatch) => {
   try {
     const { data } = await api.updatePost(id, post);
