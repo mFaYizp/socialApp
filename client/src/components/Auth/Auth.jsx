@@ -8,15 +8,19 @@ import {
   Paper,
   Typography,
 } from "@material-ui/core";
-import { GoogleLogin } from "react-google-login";
+import { GoogleLogin } from "@react-oauth/google";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Input from "./Input";
-import Icon from "./Icon";
+import { useDispatch } from "react-redux";
+import {AUTH} from "../../constants/actionTypes"
+import {useHistory} from "react-router-dom"
 
 const Auth = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
+  const dispatch = useDispatch();
+  const history = useHistory()
 
   const handleSubmit = () => {};
   const handleChange = () => {};
@@ -26,8 +30,12 @@ const Auth = () => {
     setIsSignup((prevIsSignup) => !prevIsSignup);
     handleShowPassword(false);
   };
-  const googleSuccess = async (res) => {
-    console.log(res);
+  const googleSuccess = async ({credential}) =>{
+console.log(credential);
+    try {
+      dispatch({ type: AUTH, payload: credential });
+
+    } catch (error) {}
   };
   const googleFailure = (error) => {
     console.log(error);
@@ -91,22 +99,9 @@ const Auth = () => {
             {isSignup ? "Sign Up" : "Sign In"}
           </Button>
           <GoogleLogin
-            clientId="890604501444-pte5o98ugts067k3o5evfpgp5l347108.apps.googleusercontent.com"
-            render={(renderProp) => (
-              <Button
-                className={classes.googleButton}
-                color="primary"
-                fullWidth
-                onClick={renderProp.onClick}
-                disabled={renderProp.disabled}
-                startIcon={<Icon />}
-                variant="contained"
-              >
-                Google Sign In
-              </Button>
-            )}
             onSuccess={googleSuccess}
             onFailure={googleFailure}
+            useOneTap
           />
           <Grid container justifyContent="flex-end">
             <Grid item>
