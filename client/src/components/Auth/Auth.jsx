@@ -8,19 +8,20 @@ import {
   Paper,
   Typography,
 } from "@material-ui/core";
-import { GoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Input from "./Input";
 import { useDispatch } from "react-redux";
 import {AUTH} from "../../constants/actionTypes"
-import {useHistory} from "react-router-dom"
+import Icon from "./Icon";
+
 
 const Auth = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
   const dispatch = useDispatch();
-  const history = useHistory()
+
 
   const handleSubmit = () => {};
   const handleChange = () => {};
@@ -30,17 +31,9 @@ const Auth = () => {
     setIsSignup((prevIsSignup) => !prevIsSignup);
     handleShowPassword(false);
   };
-  const googleSuccess = async ({credential}) =>{
-console.log(credential);
-    try {
-      dispatch({ type: AUTH, payload: credential });
-
-    } catch (error) {}
-  };
-  const googleFailure = (error) => {
-    console.log(error);
-    console.log("google Sign In was unsuccessful, Try again later");
-  };
+  const login = useGoogleLogin({
+    onSuccess: tokenResponse => console.log(tokenResponse),
+  });
   return (
     <Container component="main" maxWidth="xs">
       <Paper className={classes.paper} elevation={3}>
@@ -98,11 +91,9 @@ console.log(credential);
           >
             {isSignup ? "Sign Up" : "Sign In"}
           </Button>
-          <GoogleLogin
-            onSuccess={googleSuccess}
-            onFailure={googleFailure}
-            useOneTap
-          />
+          <Button className={classes.googleButton} color="primary" fullWidth onClick={()=>login()}  startIcon={<Icon />} variant="contained">
+                Google Sign In
+              </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Button onClick={switchMode}>
