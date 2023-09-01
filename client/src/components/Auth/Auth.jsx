@@ -12,16 +12,14 @@ import { useGoogleLogin } from "@react-oauth/google";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Input from "./Input";
 import { useDispatch } from "react-redux";
-import {AUTH} from "../../constants/actionTypes"
+import { AUTH } from "../../constants/actionTypes";
 import Icon from "./Icon";
-
 
 const Auth = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
   const dispatch = useDispatch();
-
 
   const handleSubmit = () => {};
   const handleChange = () => {};
@@ -32,7 +30,13 @@ const Auth = () => {
     handleShowPassword(false);
   };
   const login = useGoogleLogin({
-    onSuccess: tokenResponse => console.log(tokenResponse),
+    onSuccess: ({ credential }) => {
+      console.log(credential);
+      dispatch({ type: AUTH, payload: credential });
+    },
+    onError: () => {
+      console.log("Sign up failed try again later!");
+    },
   });
   return (
     <Container component="main" maxWidth="xs">
@@ -91,9 +95,16 @@ const Auth = () => {
           >
             {isSignup ? "Sign Up" : "Sign In"}
           </Button>
-          <Button className={classes.googleButton} color="primary" fullWidth onClick={()=>login()}  startIcon={<Icon />} variant="contained">
-                Google Sign In
-              </Button>
+          <Button
+            className={classes.googleButton}
+            color="primary"
+            fullWidth
+            onClick={() => login()}
+            startIcon={<Icon />}
+            variant="contained"
+          >
+            Google Sign In
+          </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Button onClick={switchMode}>

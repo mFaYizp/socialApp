@@ -25,16 +25,15 @@ const Input = ({
         type={type}
         inputProps={
           name === "password"
-            && {
-                endAdornment: (
+            ? {
+                endadornment: (
                   <InputAdornment position="end">
                     <IconButton onClick={handleShowPassword}>
                       {type === "password" ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
                 ),
-              }
-           
+              } :{}
         }
       />
     </Grid>
