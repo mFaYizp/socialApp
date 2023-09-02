@@ -1,16 +1,32 @@
 import { AppBar, Avatar, Button, Toolbar, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import useStyles from "./styles";
 import memories from "../../images/memories.png";
+import { getUserData } from "../../utils";
+import { useDispatch } from "react-redux";
+import { LOGOUT } from "../../constants/actionTypes";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import { googleLogout } from "@react-oauth/google";
 
 const Navbar = () => {
   const classes = useStyles();
+  const [user, setUser] = useState(null);
+  const dispatch = useDispatch()
+  const history = useHistory()
+  
+  const logout = () => {
+    dispatch({ type:LOGOUT })
+    googleLogout();
+    history.push("/")
+    setUser(null)
+  };
 
-  const user = null;
+  // useEffect(()=>{
+  //   setUser(getUserData())
+  // },[])
 
-  const logout = () => {};
 
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">

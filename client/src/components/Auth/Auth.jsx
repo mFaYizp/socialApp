@@ -14,15 +14,38 @@ import Input from "./Input";
 import { useDispatch } from "react-redux";
 import { AUTH } from "../../constants/actionTypes";
 import Icon from "./Icon";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import { signin, signup } from "../../actions/auth";
+
+const initialState = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 
 const Auth = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
+  const [formData, setFormData] = useState(initialState);
   const dispatch = useDispatch();
+  const history = useHistory();
 
-  const handleSubmit = () => {};
-  const handleChange = () => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isSignup) {
+      dispatch(signup(formData, history));
+    } else {
+      dispatch(signin(formData, history));
+    }
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
   const switchMode = () => {
@@ -30,12 +53,17 @@ const Auth = () => {
     handleShowPassword(false);
   };
   const login = useGoogleLogin({
-    onSuccess: ({ credential }) => {
-      console.log(credential);
-      dispatch({ type: AUTH, payload: credential });
+    onSuccess: async ({ access_token }) => {
+      console.log(access_token);
+      try {
+        dispatch({ type: AUTH, payload: access_token });
+        history.push("/");
+      } catch (error) {
+        console.log(error);
+      }
     },
-    onError: () => {
-      console.log("Sign up failed try again later!");
+    onError: (error) => {
+      console.log("Sign up failed try again later!", error);
     },
   });
   return (
