@@ -48,13 +48,16 @@ const Auth = () => {
 
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
+
   const switchMode = () => {
     setIsSignup((prevIsSignup) => !prevIsSignup);
-    handleShowPassword(false);
+    setShowPassword(false);
   };
+
   const login = useGoogleLogin({
     onSuccess: async ({ access_token }) => {
       console.log(access_token);
+
       try {
         dispatch({ type: AUTH, payload: access_token });
         history.push("/");
@@ -66,6 +69,7 @@ const Auth = () => {
       console.log("Sign up failed try again later!", error);
     },
   });
+
   return (
     <Container component="main" maxWidth="xs">
       <Paper className={classes.paper} elevation={3}>
