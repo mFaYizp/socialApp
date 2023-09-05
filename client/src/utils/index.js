@@ -1,16 +1,34 @@
-import jwt_decode from "jwt-decode";
+export const getUserData = async () => {
+  try {
+    const access_token = localStorage.getItem("profile");
 
-export const getUserData = () => {
-  const jwtToken = localStorage.getItem("profile");
-  if (jwtToken) {
-    const tokenData = jwt_decode(jwtToken);
-    return {
-      name: tokenData?.name,
-      imageUrl: tokenData?.picture,
-      email: tokenData?.email,
-      id: tokenData?.id ?? tokenData?.sub,
-      exp: tokenData?.exp,
-    };
+    const response = await fetch(
+      "https://www.googleapis.com/oauth2/v2/userinfo",
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch user data");
+    }
+
+    const data = await response.json();
+
+    if (data) {
+      return {
+        name: data?.name,
+        imageUrl: data?.picture,
+        email: data?.email,
+        id: data?.id,
+      };
+    }
+
+    return null;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
-  return null;
 };

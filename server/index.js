@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
 app.use("/posts", postRouter);
-app.use("/users", userRouter);
+app.use("/user", userRouter);
 
 mongoose
   .connect(process.env.MONGO_URL)

@@ -13,20 +13,28 @@ import { googleLogout } from "@react-oauth/google";
 const Navbar = () => {
   const classes = useStyles();
   const [user, setUser] = useState(null);
-  const dispatch = useDispatch()
-  const history = useHistory()
-  
+  const dispatch = useDispatch();
+  const history = useHistory();
+
   const logout = () => {
-    dispatch({ type:LOGOUT })
+    dispatch({ type: LOGOUT });
     googleLogout();
-    history.push("/")
-    setUser(null)
+    history.push("/");
+    setUser(null);
   };
 
-  // useEffect(()=>{
-  //   setUser(getUserData())
-  // },[])
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userData = await getUserData();
+        setUser(userData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
+    fetchUserData();
+  }, []);
 
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
@@ -52,13 +60,13 @@ const Navbar = () => {
           <div className={classes.profile}>
             <Avatar
               className={classes.purple}
-              alt={user.result.name}
-              src={user.result.imageUrl}
+              alt={user.name}
+              src={user.imageUrl}
             >
-              {user.result.name.charAt(0)}
+              {user.name.charAt(0)}
             </Avatar>
             <Typography className={classes.userName} variant="h6">
-              {user.result.name}
+              {user.name}
             </Typography>
             <Button
               variant="contained"

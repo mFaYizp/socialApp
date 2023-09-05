@@ -48,10 +48,10 @@ export const signup = async (req, res) => {
     });
 
     const token = jwt.sign(
-        { email: currentUser.email, id: currentUser._id },
-        process.env.JWT_SECRET,
-        { expiresIn: "1h" }
-      );
+      { email: currentUser.email, id: currentUser._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
 
     res.status(200).json({ result, token });
   } catch (error) {

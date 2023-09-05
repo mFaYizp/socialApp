@@ -56,8 +56,6 @@ const Auth = () => {
 
   const login = useGoogleLogin({
     onSuccess: async ({ access_token }) => {
-      console.log(access_token);
-
       try {
         dispatch({ type: AUTH, payload: access_token });
         history.push("/");
