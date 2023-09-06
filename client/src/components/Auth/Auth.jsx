@@ -57,7 +57,30 @@ const Auth = () => {
   const login = useGoogleLogin({
     onSuccess: async ({ access_token }) => {
       try {
-        dispatch({ type: AUTH, payload: access_token });
+        const response = await fetch(
+          "https://www.googleapis.com/oauth2/v2/userinfo",
+          {
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+
+        const data = await response.json();
+
+        const result = {
+          name: data?.name,
+          imageUrl: data?.picture,
+          email: data?.email,
+          id: data?.id,
+        };
+
+        // console.log(name, imageUrl, email, id);
+        dispatch({ type: AUTH, data: { result } });
         history.push("/");
       } catch (error) {
         console.log(error);
