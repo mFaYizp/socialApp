@@ -57,6 +57,7 @@ const Auth = () => {
   const login = useGoogleLogin({
     onSuccess: async ({ access_token }) => {
       try {
+        //USER DETAILS
         const response = await fetch(
           "https://www.googleapis.com/oauth2/v2/userinfo",
           {
@@ -71,6 +72,7 @@ const Auth = () => {
         }
 
         const data = await response.json();
+  console.log(data);
 
         const result = {
           name: data?.name,
@@ -79,7 +81,6 @@ const Auth = () => {
           id: data?.id,
         };
 
-        // console.log(name, imageUrl, email, id);
         dispatch({ type: AUTH, data: { result } });
         history.push("/");
       } catch (error) {
