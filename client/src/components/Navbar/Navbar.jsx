@@ -6,7 +6,7 @@ import useStyles from "./styles";
 import memories from "../../images/memories.png";
 import { useDispatch } from "react-redux";
 import { LOGOUT } from "../../constants/actionTypes";
-import decode from "jwt-decode"
+import decode from "jwt-decode";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import { googleLogout } from "@react-oauth/google";
 
@@ -16,6 +16,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
+
   const logout = () => {
     dispatch({ type: LOGOUT });
     googleLogout();
@@ -24,17 +25,16 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-const token = user?.token
+    const token = user?.token;
 
-if (token) {
-  const decodedToken = decode(token)
+    if (token) {
+      const decodedToken = decode(token);
 
-  if(decodedToken.exp * 1000 < new Date().getTime()) logout()
-}
+      if (decodedToken.exp * 1000 < new Date().getTime()) logout();
+    }
 
-   setUser(JSON.parse(localStorage.getItem("profile")))
+    setUser(JSON.parse(localStorage.getItem("profile")));
   }, []);
-  console.log(user);
 
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
