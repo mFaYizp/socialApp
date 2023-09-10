@@ -72,7 +72,7 @@ const Auth = () => {
         }
 
         const data = await response.json();
-  console.log(data);
+        console.log(data);
 
         const result = {
           name: data?.name,
