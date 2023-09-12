@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 
 import useStyles from "./styles";
-import memories from "../../images/memories.png";
+import memoriesLogo from "../../images/memories-Logo.png";
+import memoriesText from "../../images/memories-Text.png";
 import { useDispatch } from "react-redux";
 import { LOGOUT } from "../../constants/actionTypes";
 import decode from "jwt-decode";
@@ -15,7 +16,6 @@ const Navbar = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
   const dispatch = useDispatch();
   const history = useHistory();
-
 
   const logout = () => {
     dispatch({ type: LOGOUT });
@@ -38,23 +38,15 @@ const Navbar = () => {
 
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
-      <div className={classes.brandContainer}>
-        <Typography
-          component={Link}
-          to="/"
-          className={classes.heading}
-          variant="h2"
-          align="center"
-        >
-          Memories
-        </Typography>
+      <Link to="/" className={classes.brandContainer}>
+        <img src={memoriesText} alt="icon" height="45px" />
         <img
           className={classes.image}
-          src={memories}
-          alt="memories"
-          height="60"
+          src={memoriesLogo}
+          alt="icon "
+          height="40px"
         />
-      </div>
+      </Link>
       <Toolbar className={classes.toolbar}>
         {user ? (
           <div className={classes.profile}>
