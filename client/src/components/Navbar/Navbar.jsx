@@ -8,13 +8,14 @@ import memoriesText from "../../images/memories-Text.png";
 import { useDispatch } from "react-redux";
 import { LOGOUT } from "../../constants/actionTypes";
 import decode from "jwt-decode";
-import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import { googleLogout } from "@react-oauth/google";
+import { useLocation,useHistory } from "react-router-dom";
 
 const Navbar = () => {
   const classes = useStyles();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
   const dispatch = useDispatch();
+  const location = useLocation()
   const history = useHistory();
 
   const logout = () => {
@@ -34,7 +35,7 @@ const Navbar = () => {
     }
 
     setUser(JSON.parse(localStorage.getItem("profile")));
-  },[]);
+  },[location]);
 
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">

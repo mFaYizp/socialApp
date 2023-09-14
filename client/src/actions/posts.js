@@ -18,8 +18,7 @@ export const getPost = (id) => async (dispatch) => {
     dispatch({ type: START_LOADING });
     const { data } = await api.fetchPost(id);
 
-    dispatch({ type: FETCH_POST, payload: data });
-    dispatch({ type: END_LOADING });
+    dispatch({ type: FETCH_POST, payload: { post: data } });
   } catch (error) {
     console.log(error);
   }
@@ -59,11 +58,13 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
   }
 };
 
-export const createPost = (post) => async (dispatch) => {
+export const createPost = (post, history) => async (dispatch) => {
   try {
     const { data } = await api.createPost(post);
-
+    
     dispatch({ type: CREATE, payload: data });
+
+    history.push(`/posts/${data._id}`);
   } catch (error) {
     console.log(error);
   }
@@ -90,8 +91,9 @@ export const deletePost = (id) => async (dispatch) => {
 };
 
 export const likePost = (id) => async (dispatch) => {
+  const user = JSON.parse(localStorage.getItem('profile'));
   try {
-    const { data } = await api.likePost(id);
+    const { data } = await api.likePost(id , user?.token);
 
     dispatch({ type: LIKE, payload: data });
   } catch (error) {
