@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { getPost, getPostsBySearch } from "../../actions/posts";
+import CommentSection from "./CommentSection";
 
 const PostDetails = () => {
   const { post, posts, isLoading } = useSelector((state) => state.posts);
@@ -20,7 +21,7 @@ const PostDetails = () => {
 
   useEffect(() => {
     dispatch(getPost(id));
-  }, [id]);
+  }, [id,dispatch]);
 
   useEffect(() => {
     if (post) {
@@ -28,10 +29,10 @@ const PostDetails = () => {
         getPostsBySearch({ search: "none", tags: post?.tags.join(",") })
       );
     }
-  }, [post]);
+  }, [post,dispatch]);
 
   if (!post) return null;
-  
+
   const openPost = (_id) => history.push(`/posts/${_id}`);
 
   if (isLoading) {
@@ -42,8 +43,8 @@ const PostDetails = () => {
     );
   }
 
-  const recommendedPosts = posts.filter(({ _id,tags }) => _id !== post._id ,) 
-console.log(recommendedPosts);
+  const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
+
   return (
     <Paper style={{ padding: "20px", borderRadius: "15px" }} elevation={6}>
       <div className={classes.card}>
@@ -71,9 +72,7 @@ console.log(recommendedPosts);
             <strong>Realtime Chat - coming soon!</strong>
           </Typography>
           <Divider style={{ margin: "20px 0" }} />
-          <Typography variant="body1">
-            <strong>Comments - coming soon!</strong>
-          </Typography>
+          <CommentSection post={post} />
           <Divider style={{ margin: "20px 0" }} />
         </div>
         <div className={classes.imageSection}>
@@ -113,7 +112,12 @@ console.log(recommendedPosts);
                   <Typography gutterBottom variant="subtitle1">
                     Likes:{likes?.length}
                   </Typography>
-                  <img src={selectedFile} width="200px" style={{borderRadius:"10px"}} />
+                  <img
+                    src={selectedFile}
+                    width="200px"
+                    style={{ borderRadius: "10px" }}
+                    alt={title}
+                  />
                 </div>
               )
             )}
