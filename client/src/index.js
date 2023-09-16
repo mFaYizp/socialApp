@@ -14,7 +14,7 @@ dotenv.config();
 const store = createStore(reducers, compose(applyMiddleware(thunk)));
 
 ReactDOM.render(
-  <GoogleOAuthProvider clientId="890604501444-pte5o98ugts067k3o5evfpgp5l347108.apps.googleusercontent.com">
+  <GoogleOAuthProvider clientId={process.env.REACT_APP_OAUTH2_CLIENT_ID}>
     <Provider store={store}>
       <App />
     </Provider>

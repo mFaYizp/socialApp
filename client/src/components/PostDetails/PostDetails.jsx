@@ -21,7 +21,7 @@ const PostDetails = () => {
 
   useEffect(() => {
     dispatch(getPost(id));
-  }, [id,dispatch]);
+  }, [id, dispatch]);
 
   useEffect(() => {
     if (post) {
@@ -29,7 +29,7 @@ const PostDetails = () => {
         getPostsBySearch({ search: "none", tags: post?.tags.join(",") })
       );
     }
-  }, [post,dispatch]);
+  }, [post, dispatch]);
 
   if (!post) return null;
 
